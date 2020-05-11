@@ -1,3 +1,12 @@
+# cj
+
+bin/
+include/
+lib/
+man/
+
+**/*.pyc
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
