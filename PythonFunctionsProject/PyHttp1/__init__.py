@@ -1,6 +1,6 @@
 import logging
-
 import azure.functions as func
+import arrow
 
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
@@ -16,9 +16,12 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             name = req_body.get('name')
 
     if name:
-        return func.HttpResponse(f"Hello {name}!")
+        now   = arrow.utcnow()
+        epoch = now.timestamp
+        msg   = 'Hello {}, the date time is {}, epoch {}'.format(name, str(now), epoch)
+        logging.info(msg)
+        return func.HttpResponse(msg)
     else:
         return func.HttpResponse(
              "Please pass a name on the query string or in the request body",
-             status_code=400
-        )
+             status_code=400)
