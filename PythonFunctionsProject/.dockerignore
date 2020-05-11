@@ -1,1 +1,3 @@
 local.settings.json
+build-container.sh
+pip-install.sh
