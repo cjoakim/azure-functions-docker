@@ -2,6 +2,8 @@
 
 Azure Functions, implemented with Docker Containers and Python
 
+---
+
 ## Links
 
 - https://docs.microsoft.com/en-us/azure/azure-functions/
@@ -10,9 +12,11 @@ Azure Functions, implemented with Docker Containers and Python
 - https://hub.docker.com/_/microsoft-azure-functions-python
 - https://docs.microsoft.com/en-us/azure/azure-functions/machine-learning-pytorch?tabs=bash
 
+---
+
 ## Create a Function on Workstation with Azure Functions Core Tools and CLI
 
-This example uses macOS.
+This example uses macOS, bash, the Azure CLI, python 3, and Terminal.
 
 ### Initialize the Functions Project
 
@@ -36,6 +40,8 @@ Writing .dockerignore
 
 $ cd PythonFunctionsProject/
 ```
+
+---
 
 ### Create a HTTP-Triggered Function within the Functions Project
 
@@ -145,6 +151,8 @@ An actual production Azure application should use **Azure Container Registry**.
 docker push cjoakim/azurepythonfunctions:v1.0.0
 ```
 
+---
+
 ### Provision Azure Resources and your Azure Function App
 
 First, edit **env.sh** with **your** Azure configuration values.
@@ -157,11 +165,15 @@ $ provision-1-app.sh
 $ provision-2-config-storage.sh
 ```
 
+---
+
 ### Get the URL for your Function in Azure Portal
 
 Click the **Get Function URL** link on this page:
 
 ![deployed-function-get-url](img/deployed-function-get-url.png)
+
+---
 
 ### Invoke the HTTP-Triggered Azure Function with a HTTP Client Program
 
@@ -172,6 +184,8 @@ curl "https://cjoakimfdp.azurewebsites.net/api/PyHttp1?code=<secret>&name=Joakim
 
 Hello Joakim!
 ```
+
+---
 
 ### Cleanup
 
