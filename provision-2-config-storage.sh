@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Configure the Azure Storage Account used by the Function App.
-# Chris Joakim, Microsoft, 2020/05/11
+# Chris Joakim, Microsoft, 2020/05/12
 
 source ./env.sh display
 

@@ -2,7 +2,7 @@
 
 # Provision an Azure Resource Group, Storage Account, App Plan, 
 # and Azure Function using the Azure CLI (az).
-# Chris Joakim, Microsoft, 2020/05/11
+# Chris Joakim, Microsoft, 2020/05/12
 
 source ./env.sh display
 

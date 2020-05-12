@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Build the Docker container locally.
-# Chris Joakim, Microsoft, 2020/05/11
+# Chris Joakim, Microsoft, 2020/05/12
 
 source ../env.sh 
 
@@ -13,3 +13,4 @@ docker build --tag $image_name .
 echo 'next:'
 echo 'docker run -p 3000:80 -it '$image_name
 echo 'docker push '$image_name
+echo ''

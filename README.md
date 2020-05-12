@@ -10,6 +10,8 @@ Azure Functions, implemented with Docker Containers and Python
 - https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-function-linux-custom-image
 - https://hub.docker.com/_/microsoft-azure-functions-base
 - https://hub.docker.com/_/microsoft-azure-functions-python
+- https://docs.microsoft.com/en-us/azure/azure-functions/functions-reference-python
+- https://docs.microsoft.com/en-us/python/api/azure-functions/azure.functions?view=azure-python
 - https://docs.microsoft.com/en-us/azure/azure-functions/machine-learning-pytorch?tabs=bash
 
 ---
