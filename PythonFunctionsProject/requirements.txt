@@ -1,3 +1,4 @@
 azure-functions
 arrow
+requests
 

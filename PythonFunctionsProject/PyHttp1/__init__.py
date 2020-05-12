@@ -2,9 +2,10 @@ import logging
 import azure.functions as func
 import arrow
 
+from ..shared_code import common
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
-    logging.info('Python HTTP trigger function processed a request.')
+    logging.info('PyHttp1 HTTP trigger; app_version: {}'.format(common.app_version()))
 
     name = req.params.get('name')
     if not name:
@@ -16,9 +17,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             name = req_body.get('name')
 
     if name:
-        now   = arrow.utcnow()
-        epoch = now.timestamp
-        msg   = 'Hello {}, the date time is {}, epoch {}'.format(name, str(now), epoch)
+        now   = common.now()
+        epoch = common.epoch()
+        msg   = 'Hello {}, the date time is {}, epoch {} (common)'.format(name, str(now), epoch)
         logging.info(msg)
         return func.HttpResponse(msg)
     else:
