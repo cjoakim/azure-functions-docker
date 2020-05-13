@@ -1,6 +1,9 @@
 """
 Usage:
   python http-client.py create_config_json
+  python http-client.py load_regions local
+  python http-client.py query_by_pk local eastus
+  python http-client.py query_by_pk local germanynorth
 """
 
 # Python HTTP Client program for this Azure Function.
@@ -24,7 +27,7 @@ class HttpClient:
     def __init__(self):
         self.u = None  # the current url
         self.r = None  # the current requests response object
-        self.config = dict()
+        self.config = self.load_json_file('config.json')
         self.user_agent = {'User-agent': 'Mozilla/5.0'}
 
     def create_config_json(self):
@@ -33,33 +36,31 @@ class HttpClient:
         data['azure'] = ''
         self.write_json_file(data, 'config.json')
 
-    def post_region_inserts(self, target, infile, pk):
-        # target is a partial URL like this: http://52.179.113.199
-        # infile is a json file in the journeys directory, like relay-planet-aks.json
-        endpoint = '{}/journey/relay'.format(target)
-        print('post_journey_relay endpoint: {}'.format(endpoint))
-        postobj  = self.load_json_file('journeys/{}'.format(infile))
-        postobj['pk'] = pk
-        f = 'post_journey_relay_{}'.format(pk)
-        self.execute_post(endpoint, postobj, {'f': f})
+    def load_regions(self, target):
+        url = self.config[target]
+        print('url: {}'.format(url))
 
+        regions = self.load_json_file('data/azure-regions.json')
+        for region in regions:
+            lat, lng = float(region['latitude']), float(region['longitude'])
+            region['doctype'] = 'region'
+            region['pk'] = region['name']
+            region['lat_lng'] = '{}, {}'.format(lat, lng)
+            loc = dict()
+            loc['type'] = 'Point'
+            loc['coordinates'] = [lng, lat]
+            region['location'] = loc
+            for attr in 'id,latitude,longitude,subscriptionId'.split(','):
+                del region[attr]
+            print(json.dumps(region, sort_keys=False, indent=2))
+            self.execute_post(url, region, {})
 
-
-    def execute_get(self, endpoint, opts=dict()):
-        print('execute_get, endpoint: {}'.format(endpoint))
-        r = requests.get(url=endpoint) 
-        print('response: {}'.format(r))
-
-        if r.status_code == 200:
-            resp_obj = json.loads(r.text)
-            print(json.dumps(resp_obj, sort_keys=False, indent=2))
-            if len(opts.keys()) > 0:
-                p = dict()
-                p['endpoint'] = endpoint
-                p['resp'] = str(r)
-                p['resp_obj'] = resp_obj
-                outfile = 'tmp/{}_{}.json'.format(int(self.epoch()), opts['f'])
-                self.write_json_file(p, outfile)
+    def query_by_pk(self, target, pk):
+        url = self.config[target]
+        print('url: {}'.format(url))
+        data = dict()
+        data['query'] = "select * from c where c.pk = '{}'".format(pk)
+        self.execute_post(url, data, {})
 
     def execute_post(self, endpoint, postobj, opts):
         print('===')
@@ -73,17 +74,7 @@ class HttpClient:
         if r.status_code == 200:
             resp_obj = json.loads(r.text)
             print(json.dumps(resp_obj, sort_keys=False, indent=2))
-            if 'save_to_file' in opts:
-                p = dict()
-                p['endpoint'] = endpoint
-                p['postobj']  = postobj
-                p['resp'] = str(r)
-                p['resp_obj'] = resp_obj
-                self.write_json_file(p, 'tmp/post.json')
 
-    def epoch(self):
-        return time.time()
-    
     def write_json_file(self, obj, outfile):
         with open(outfile, 'wt') as f:
             f.write(json.dumps(obj, sort_keys=False, indent=2))
@@ -100,48 +91,21 @@ def print_options(msg):
 
 
 if __name__ == "__main__":
-    # print(sys.argv)
-
     if len(sys.argv) > 1:
         func = sys.argv[1].lower()
         client = HttpClient()
-        #client.initialize()
 
         if func == 'create_config_json':
             client.create_config_json()
 
-        elif func == 'get_health_alive':
+        elif func == 'load_regions':
             target = sys.argv[2].lower()
-            client.get_health_alive(target)
+            client.load_regions(target)
 
-        elif func == 'get_journey_by_id_and_pk':
-            target = sys.argv[2].lower()
-            id = sys.argv[3]
-            pk = sys.argv[4]
-            client.get_journey_by_id_and_pk(target, id, pk)
+        elif func == 'query_by_pk':
+            target, pk = sys.argv[2].lower(), sys.argv[3]
+            client.query_by_pk(target, pk)
 
-        elif func == 'get_journey_by_pk':
-            target = sys.argv[2].lower()
-            pk = sys.argv[3]
-            client.get_journey_by_pk(target, pk)
-
-        elif func == 'post_journey_relay':
-            target = sys.argv[2].lower()
-            infile = sys.argv[3]
-            if len(sys.argv) > 4:
-                pk = sys.argv[4]
-            else:
-                pk = str(int(time.time()))
-            client.post_journey_relay(target, infile, pk)
-
-        elif func == 'delete_all_journey_docs':
-            target = sys.argv[2].lower()
-            infile = sys.argv[3]
-            client.delete_all_journey_docs(target, infile)
-
-        elif func == 'create_aci_config_json':
-            client.create_aci_config_json()
-    
         else:
             print_options('Error: invalid function: {}'.format(func))
     else:
