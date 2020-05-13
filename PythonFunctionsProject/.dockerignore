@@ -1,5 +1,17 @@
+
+# settings
+local.settings.json
+
+# files for local/workstation testing
 build-container.sh
-build-func-local.sh
+build-local.sh
 fetch-app-settings.sh
 local.settings.json
-start-func-local.sh
+pyvenv.cfg
+start-local.sh
+
+# localhost virtual environment
+bin/
+lib/
+include/
+man/

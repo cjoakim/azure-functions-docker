@@ -18,7 +18,7 @@
       "databaseName": "dev",
       "collectionName": "airports",
       "createIfNotExists": "false",
-      "connectionStringSetting": "AZURE_COSMOSDB_SQLDB_CONN_STRING"
+      "connectionStringSetting": "AzureCosmosDBConnectionString"
     },
     {
       "type": "http",

@@ -5,9 +5,9 @@ FROM mcr.microsoft.com/azure-functions/python:2.0-python3.7
 ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
     AzureFunctionsJobHost__Logging__Console__IsEnabled=true
 
+RUN  date
+
 COPY requirements.txt /
-RUN pip install -r /requirements.txt
+RUN  pip install -r /requirements.txt
 
 COPY . /home/site/wwwroot
-
-RUN pip list > /home/site/wwwroot/pip_list.txt
