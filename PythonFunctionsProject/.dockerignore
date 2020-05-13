@@ -1,3 +1,5 @@
-local.settings.json
 build-container.sh
-pip-install.sh
+build-func-local.sh
+fetch-app-settings.sh
+local.settings.json
+start-func-local.sh
