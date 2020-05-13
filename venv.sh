@@ -10,5 +10,6 @@ source bin/activate
 echo 'Displaying python and pip version in virtual environment:'
 python --version  
 pip --version
+pip list
 
 echo 'done'

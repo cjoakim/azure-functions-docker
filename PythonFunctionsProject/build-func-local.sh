@@ -8,20 +8,22 @@
 
 source ../env.sh 
 
-echo 'using project venv ...'
-cd .. 
+# echo 'using project venv ...'
+# cd .. 
+# source bin/activate
+# cd PythonFunctionsProject
+
+echo 'creating venv ...'
+python3 -m venv .
 source bin/activate
-cd PythonFunctionsProject
 
-echo 'pip install to .python_packages/lib/site-packages ...'
-pip install  --target=".python_packages/lib/site-packages" --upgrade -r requirements.txt
+echo 'python --version:'
+python --version
 
-# The above is better than doing this:
-# pip install -r requirements.txt
-# pip list
-
-echo 'listing directories/packages in .python_packages/lib/site-packages:'
-ls -al .python_packages/lib/site-packages
+echo 'pip install ...'
+pip install -r requirements.txt
+#pip install --target=".python_packages/lib/site-packages" --upgrade -r requirements.txt
+pip list
 
 #func azure functionapp publish $app_name --build local
 
