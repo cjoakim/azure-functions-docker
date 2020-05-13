@@ -31,6 +31,7 @@ def main(req: func.HttpRequest, context: func.Context, doc: func.Out[func.Docume
         opts['key'] = common.env_var('AZURE_COSMOSDB_SQLDB_KEY', 'none')
         c = cosmos.Cosmos(opts)
         sql = post_data['query']
+        response_obj['query'] = sql
         items = c.query_container('dev', 'pyfunction', sql, True)
         response_obj['documents'] = list()
         for item in items:

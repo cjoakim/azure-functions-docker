@@ -4,7 +4,7 @@ Usage:
   python http-client.py load_regions local
   python http-client.py query_by_pk local eastus
   python http-client.py query_by_pk local germanynorth
-  python http-client.py query_by_geo local 53.073635 8.806422 10
+  python http-client.py query_by_geo local 8.806422 53.073635  10
 """
 
 # Python HTTP Client program for this Azure Function.
