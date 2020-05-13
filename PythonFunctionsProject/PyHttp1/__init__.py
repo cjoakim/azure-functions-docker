@@ -31,11 +31,10 @@ def main(req: func.HttpRequest, context: func.Context, doc: func.Out[func.Docume
         opts['key'] = common.env_var('AZURE_COSMOSDB_SQLDB_KEY', 'none')
         c = cosmos.Cosmos(opts)
         sql = post_data['query']
-        items = c.query_container('dev', 'airports', sql, True)
+        items = c.query_container('dev', 'pyfunction', sql, True)
         response_obj['documents'] = list()
         for item in items:
             print(item)
-            response_obj['documents'].append(item)
             response_obj['documents'].append(item)
         response_obj['documents_count'] = len(response_obj['documents'])
         response_obj['last_request_charge'] = c.last_request_charge()

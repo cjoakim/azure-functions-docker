@@ -15,7 +15,7 @@
       "direction": "out",
       "name": "doc",
       "databaseName": "dev",
-      "collectionName": "airports",
+      "collectionName": "pyfunction",
       "createIfNotExists": "false",
       "connectionStringSetting": "AzureCosmosDBConnectionString"
     },
