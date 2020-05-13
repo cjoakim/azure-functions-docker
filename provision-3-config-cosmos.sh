@@ -11,6 +11,16 @@ az functionapp config appsettings set \
 --resource-group $rg \
 --settings AzureCosmosDBConnectionString=$AZURE_COSMOSDB_SQLDB_CONN_STRING
 
+az functionapp config appsettings set \
+--name $app_name \
+--resource-group $rg \
+--settings AZURE_COSMOSDB_SQLDB_URI=$AZURE_COSMOSDB_SQLDB_URI
+
+az functionapp config appsettings set \
+--name $app_name \
+--resource-group $rg \
+--settings AZURE_COSMOSDB_SQLDB_KEY=$AZURE_COSMOSDB_SQLDB_KEY
+
 echo 'sleeping...'
 sleep 20
 

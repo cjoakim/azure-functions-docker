@@ -6,37 +6,43 @@ import arrow
 import azure.functions as func
 
 from ..shared_code import common
+from ..shared_code import cosmos
 
 def main(req: func.HttpRequest, context: func.Context, doc: func.Out[func.Document]) -> func.HttpResponse:
     fname  = context.function_name
     inv_id = context.invocation_id
     log.info(f'{fname} HTTP trigger, invocation_id: {inv_id}, app_version: {common.app_version()}')
 
-    resp_data = dict()
-    resp_data['pk'] = inv_id
-    resp_data['function_name'] = fname
-    resp_data['invocation_id'] = inv_id
-    resp_data['app_version'] = common.app_version()
-    resp_data['image_name'] = common.env_var('DOCKER_CUSTOM_IMAGE_NAME', '?')
-    resp_data['curr_timestamp'] = common.curr_timestamp()
+    pk = req.params.get('pk')
 
-    name = req.params.get('name')
-
-    if not name:
-        try:
-            req_body = req.get_json()
-        except ValueError:
-            pass
-        else:
-            name = req_body.get('name')
-
-    if name:
-        now   = common.now()
-        epoch = common.epoch()
-        resp_data['msg'] = f'Hello {name}, the date time is {str(now)}, epoch {epoch}'
-        log.info(json.dumps(resp_data))
-        common.write_cosmos_doc(doc, resp_data)
-        return func.HttpResponse(json.dumps(resp_data, indent=4, sort_keys=False))
+    if pk:
+        # Query CosmosDB for Documents with the given pk
+        opts = dict()
+        opts['uri'] = common.env_var('AZURE_COSMOSDB_SQLDB_URI', 'none')
+        opts['key'] = common.env_var('AZURE_COSMOSDB_SQLDB_KEY', 'none')
+        c = cosmos.Cosmos(opts)
+        sql = "select * from c where c.pk ='{}'".format(pk)
+        items = c.query_container('dev', 'airports', sql, True)
+        array = list()
+        for item in items:
+            print(item)
+            array.append(item)
+        return func.HttpResponse(json.dumps(array, indent=4, sort_keys=False))
     else:
-        resp_data['error_msg'] = 'Please pass a name on the query string or in the request body'
-        return func.HttpResponse(json.dumps(resp_data, indent=4, sort_keys=False), status_code=400)
+        post_data = req.get_json()  # get_json() returns an object (i.e.- dict), not a str
+        post_datatype = str(type(post_data))
+        log.info(f"post_datatype: {post_datatype}\n{post_data}")
+
+        post_data['function_name'] = fname
+        post_data['invocation_id'] = inv_id
+        post_data['app_version'] = common.app_version()
+        post_data['inserted_timestamp'] = common.curr_timestamp()
+        post_data['inserted_epoch'] = common.epoch()
+
+        jstr = json.dumps(post_data, indent=4, sort_keys=False)
+        log.info(f"writing doc:\n{jstr}")
+        common.write_cosmos_doc(doc, post_data)
+        return func.HttpResponse(jstr)
+
+# AZURE_COSMOSDB_SQLDB_URI
+# AZURE_COSMOSDB_SQLDB_KEY
