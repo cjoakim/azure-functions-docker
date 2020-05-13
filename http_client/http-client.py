@@ -4,6 +4,7 @@ Usage:
   python http-client.py load_regions local
   python http-client.py query_by_pk local eastus
   python http-client.py query_by_pk local germanynorth
+  python http-client.py query_by_geo local 53.073635 8.806422 10
 """
 
 # Python HTTP Client program for this Azure Function.
@@ -62,6 +63,19 @@ class HttpClient:
         data['query'] = "select * from c where c.pk = '{}'".format(pk)
         self.execute_post(url, data, {})
 
+    def query_by_geo(self, target, lng, lat, meters):
+        url = self.config[target]
+        print('url: {}'.format(url))
+        template = "select * from c where ST_DISTANCE(c.location, <'{}': 'Point', 'coordinates':[{}, {}]>) | {}"
+        sql = template.format('type', lng, lat, meters)
+        sql = sql.replace('<','{')
+        sql = sql.replace('>','}')
+        sql = sql.replace('|','<')
+        print(sql)
+        data = dict()
+        data['query'] = sql
+        self.execute_post(url, data, {})
+
     def execute_post(self, endpoint, postobj, opts):
         print('===')
         print('execute_post, endpoint: {}'.format(endpoint))
@@ -106,6 +120,12 @@ if __name__ == "__main__":
             target, pk = sys.argv[2].lower(), sys.argv[3]
             client.query_by_pk(target, pk)
 
+        elif func == 'query_by_geo':
+            target = sys.argv[2].lower()
+            lat = float(sys.argv[3].lower())
+            lng = float(sys.argv[4].lower())
+            km  = int(sys.argv[5].lower())
+            client.query_by_geo(target, str(lat), str(lng), str(km * 1000))
         else:
             print_options('Error: invalid function: {}'.format(func))
     else:
