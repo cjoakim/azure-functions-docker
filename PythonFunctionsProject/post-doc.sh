@@ -6,7 +6,7 @@
 hdr='Content-type: application/json'
 url="http://localhost:7071/api/PyHttp1"
 
-#echo '{"pk":"ATL", "client":"curl"}' | curl -i -X POST -H $hdr -d @- $url
+#echo '{"pk":"ICT", "client":"curl"}' | curl -i -X POST -H $hdr -d @- $url
 
-echo '{"query":"select * from c where c.pk = \"ATLx\""}' | curl -i -X POST -H $hdr -d @- $url
+echo '{"query":"select * from c where c.pk = \"ICT\""}' | curl -i -X POST -H $hdr -d @- $url
 

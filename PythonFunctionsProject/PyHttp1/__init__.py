@@ -13,6 +13,7 @@ def main(req: func.HttpRequest, context: func.Context, doc: func.Out[func.Docume
     inv_id = context.invocation_id
     version = common.app_version()
     log.info(f'{fname}, invocation_id: {inv_id}, app_version: {version}')
+    # pk = req.params.get('pk')  # this Function does not use GET requests
 
     response_obj = dict()
     response_obj['function_name'] = fname
@@ -24,18 +25,24 @@ def main(req: func.HttpRequest, context: func.Context, doc: func.Out[func.Docume
     log.info(f"post_datatype: {post_datatype}\n{post_data}")
 
     if 'query' in post_data:
+        # This branch queries the DB using the CosmosDB SDK rather than the Function bindings.
         opts = dict()
         opts['uri'] = common.env_var('AZURE_COSMOSDB_SQLDB_URI', 'none')
         opts['key'] = common.env_var('AZURE_COSMOSDB_SQLDB_KEY', 'none')
         c = cosmos.Cosmos(opts)
         sql = post_data['query']
         items = c.query_container('dev', 'airports', sql, True)
-        array = list()
+        response_obj['documents'] = list()
         for item in items:
             print(item)
-            array.append(item)
-        return func.HttpResponse(json.dumps(array, indent=4, sort_keys=False))
+            response_obj['documents'].append(item)
+            response_obj['documents'].append(item)
+        response_obj['documents_count'] = len(response_obj['documents'])
+        response_obj['last_request_charge'] = c.last_request_charge()
+        response_obj['last_response_headers'] = c.last_response_headers()
+        return func.HttpResponse(json.dumps(response_obj, indent=4, sort_keys=False))
     else:
+        # This branch inserts the given document into the DB via the 'doc' Function bindings.
         post_data['function_name'] = fname
         post_data['invocation_id'] = inv_id
         post_data['app_version'] = common.app_version()
@@ -46,37 +53,3 @@ def main(req: func.HttpRequest, context: func.Context, doc: func.Out[func.Docume
         jstr = json.dumps(response_obj, indent=4, sort_keys=False)
         log.info(jstr)
         return func.HttpResponse(jstr)
-
-
-    # if pk:
-    #     # Query CosmosDB for Documents with the given pk
-    #     opts = dict()
-    #     opts['uri'] = common.env_var('AZURE_COSMOSDB_SQLDB_URI', 'none')
-    #     opts['key'] = common.env_var('AZURE_COSMOSDB_SQLDB_KEY', 'none')
-    #     c = cosmos.Cosmos(opts)
-    #     sql = "select * from c where c.pk ='{}'".format(pk)
-    #     items = c.query_container('dev', 'airports', sql, True)
-    #     array = list()
-    #     for item in items:
-    #         print(item)
-    #         array.append(item)
-    #     return func.HttpResponse(json.dumps(array, indent=4, sort_keys=False))
-    # else:
-    #     post_data = req.get_json()  # get_json() returns an object (i.e.- dict), not a str
-    #     post_datatype = str(type(post_data))
-    #     log.info(f"post_datatype: {post_datatype}\n{post_data}")
-
-    #     post_data['function_name'] = fname
-    #     post_data['invocation_id'] = inv_id
-    #     post_data['app_version'] = common.app_version()
-    #     post_data['inserted_timestamp'] = common.curr_timestamp()
-    #     post_data['inserted_epoch'] = common.epoch()
-
-    #     jstr = json.dumps(post_data, indent=4, sort_keys=False)
-    #     log.info(f"writing doc:\n{jstr}")
-    #     common.write_cosmos_doc(doc, post_data)
-    #     return func.HttpResponse(jstr)
-
-# AZURE_COSMOSDB_SQLDB_URI
-# AZURE_COSMOSDB_SQLDB_KEY
-# pk = req.params.get('pk')
