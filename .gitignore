@@ -6,6 +6,7 @@ lib/
 man/
 
 **/*.pyc
+http_client/config.json
 
 xxx/.python_packages
 
