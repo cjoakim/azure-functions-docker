@@ -1,0 +1,25 @@
+{
+    "displayName": "East Asia",
+    "name": "eastasia",
+    "doctype": "region",
+    "pk": "eastasia",
+    "lat_lng": "22.267, 114.188",
+    "location": {
+        "type": "Point",
+        "coordinates": [
+            114.188,
+            22.267
+        ]
+    },
+    "function_name": "PyHttp1",
+    "invocation_id": "3426ed90-0fa1-4a49-b318-d2cbaf2be176",
+    "app_version": "2020/05/13 08:54",
+    "inserted_timestamp": "2020-05-13 20:57:08",
+    "inserted_epoch": 1589403428,
+    "id": "e71150e3-c56c-475f-b431-fa2cae9db848",
+    "_rid": "YtUbALcmLdQCAAAAAAAAAA==",
+    "_self": "dbs/YtUbAA==/colls/YtUbALcmLdQ=/docs/YtUbALcmLdQCAAAAAAAAAA==/",
+    "_etag": "\"0e00fca3-0000-0100-0000-5ebc5f250000\"",
+    "_attachments": "attachments/",
+    "_ts": 1589403429
+}

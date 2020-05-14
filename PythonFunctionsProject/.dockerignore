@@ -15,3 +15,7 @@ bin/
 lib/
 include/
 man/
+
+# sample data
+samples/
+

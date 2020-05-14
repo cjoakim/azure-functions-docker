@@ -1,0 +1,14 @@
+{
+    "displayName": "Some Event",
+    "name": "some-event",
+    "doctype": "region",
+    "pk": "event-eastasia",
+    "lat_lng": "22.267, 114.188",
+    "location": {
+        "type": "Point",
+        "coordinates": [
+            114.188,
+            22.267
+        ]
+    }
+}

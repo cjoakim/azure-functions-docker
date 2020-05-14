@@ -205,6 +205,22 @@ in this repo.
 
 ---
 
+## Build and Deploy Scripts 
+
+I use the following scripts in this repo to build and deploy the app.
+
+```
+env.sh  <-- common environment variables "source" by the other scripts
+
+PythonFunctionsProject/build-container.sh      # Builds the Docker container containing BOTH Functions
+PythonFunctionsProject/build-local.sh          # Python pip install for running the Function App locally
+PythonFunctionsProject/fetch-app-settings.sh   # Download settings for your Function App to local.settings.json
+PythonFunctionsProject/post-doc.sh             # Simple curl script HTTP POST data to PyHttp1
+PythonFunctionsProject/start-local.sh          # Start the local Functions App locally, for development/testing
+```
+
+---
+
 ## Create a Second Function with Azure Event Hub trigger
 
 ```
@@ -218,6 +234,10 @@ Function name: [EventHubTrigger] Writing /Users/cjoakim/github/azure-functions-d
 ...
 The function "PyEventHub1" was created successfully from the "Azure Event Hub trigger" template.
 ```
+
+## Both Functions are now Deployed and Working in the Azure Function App
+
+![deployed-functons](img/deployed-functons.png)
 
 ---
 

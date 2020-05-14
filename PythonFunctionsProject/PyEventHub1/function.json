@@ -1,14 +1,24 @@
 {
   "scriptFile": "__init__.py",
+  "disabled": false,
   "bindings": [
     {
       "type": "eventHubTrigger",
       "name": "event",
       "direction": "in",
       "eventHubName": "dev",
-      "connection": "",
+      "connection": "EventHubReadConnectionAppSetting",
       "cardinality": "one",
       "consumerGroup": "$Default"
+    },
+    {
+      "type": "cosmosDB",
+      "direction": "out",
+      "name": "doc",
+      "databaseName": "dev",
+      "collectionName": "pyfunction",
+      "createIfNotExists": "false",
+      "connectionStringSetting": "AzureCosmosDBConnectionString"
     }
   ]
 }
