@@ -1,6 +1,8 @@
 # azure-functions-docker
 
-Azure Functions, implemented with Python in Docker Containers
+**Azure Functions**, implemented with **Python** in **Docker** Containers.
+
+![montage](img/montage.png)
 
 This example uses macOS, bash, the Azure CLI, python3, and Terminal.
 
