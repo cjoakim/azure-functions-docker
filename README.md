@@ -216,6 +216,22 @@ in this repo.
 
 ---
 
+## Create a Second Function with Azure Event Hub trigger
+
+```
+$ func new --name PyEventHub1 --language python --worker-runtime python --template "Azure Event Hub trigger"
+...
+$ func new --name PyEventHub1 --language python --worker-runtime python --template "Azure Event Hub trigger"
+...
+'python' has been set in your local.settings.json
+Select a number for template:Azure Event Hub trigger
+Function name: [EventHubTrigger] Writing /Users/cjoakim/github/azure-functions-docker/PythonFunctionsProject/PyEventHub1/__init__.py
+...
+The function "PyEventHub1" was created successfully from the "Azure Event Hub trigger" template.
+```
+
+---
+
 ### Cleanup
 
 Delete the Azure Resource Group and its' contents.

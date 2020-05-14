@@ -8,6 +8,7 @@ import azure.functions as func
 from ..shared_code import common
 from ..shared_code import cosmos
 
+
 def main(req: func.HttpRequest, context: func.Context, doc: func.Out[func.Document]) -> func.HttpResponse:
     fname = context.function_name
     inv_id = context.invocation_id
