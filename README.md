@@ -21,6 +21,25 @@ Azure Functions, implemented with Docker Containers and Python
 
 This example uses macOS, bash, the Azure CLI, python 3, and Terminal.
 
+### Install and Explore the Azure Functions program; **func**
+
+Install version 2.x of the tools with Node.js
+```
+$npm install -g azure-functions-core-tools
+```
+
+Explore:
+```
+$ func --version
+2.7.2508
+
+$ func --help
+
+$ func templates list
+```
+
+[Output from 'func templates list'](func-templates-list.md)
+
 ### Initialize the Functions Project
 
 ```
