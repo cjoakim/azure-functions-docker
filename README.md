@@ -8,19 +8,6 @@ This example uses macOS, bash, the Azure CLI, python3, and Terminal.
 
 ---
 
-## Links
-
-- https://docs.microsoft.com/en-us/azure/azure-functions/
-- https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-function-linux-custom-image
-- https://hub.docker.com/_/microsoft-azure-functions-base
-- https://hub.docker.com/_/microsoft-azure-functions-python
-- https://docs.microsoft.com/en-us/azure/azure-functions/functions-reference-python
-- https://docs.microsoft.com/en-us/python/api/azure-functions/azure.functions?view=azure-python
-- https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-cosmosdb-v2-output?tabs=python
-- https://docs.microsoft.com/en-us/azure/azure-functions/machine-learning-pytorch?tabs=bash
-
----
-
 ## Install and Explore the Azure Functions program; **func**
 
 Install version 2.x of the tools with Node.js
@@ -240,3 +227,16 @@ Delete the Azure Resource Group and its' contents.
 ```
 $ provision-9-delete.sh
 ```
+
+---
+
+## Links
+
+- https://docs.microsoft.com/en-us/azure/azure-functions/
+- https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-function-linux-custom-image
+- https://hub.docker.com/_/microsoft-azure-functions-base
+- https://hub.docker.com/_/microsoft-azure-functions-python
+- https://docs.microsoft.com/en-us/azure/azure-functions/functions-reference-python
+- https://docs.microsoft.com/en-us/python/api/azure-functions/azure.functions?view=azure-python
+- https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-cosmosdb-v2-output?tabs=python
+- https://docs.microsoft.com/en-us/azure/azure-functions/machine-learning-pytorch?tabs=bash
