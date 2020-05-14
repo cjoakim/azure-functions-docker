@@ -1,6 +1,8 @@
 # azure-functions-docker
 
-Azure Functions, implemented with Docker Containers and Python
+Azure Functions, implemented with Python in Docker Containers
+
+This example uses macOS, bash, the Azure CLI, python3, and Terminal.
 
 ---
 
@@ -17,11 +19,7 @@ Azure Functions, implemented with Docker Containers and Python
 
 ---
 
-## Create a Function on Workstation with Azure Functions Core Tools and CLI
-
-This example uses macOS, bash, the Azure CLI, python 3, and Terminal.
-
-### Install and Explore the Azure Functions program; **func**
+## Install and Explore the Azure Functions program; **func**
 
 Install version 2.x of the tools with Node.js
 ```
@@ -40,8 +38,13 @@ $ func templates list
 
 [Output from 'func templates list'](func-templates-list.md)
 
-### Initialize the Functions Project
+---
 
+## Create a Function on Workstation with Azure Functions Core Tools and CLI
+
+### Initialize the Functions Project - Python and Docker
+
+Create an initial virtual environment:
 ```
 $ cd azure-functions-docker    (root directory of this GitHub repository)
 $ python3 -m venv .
@@ -50,7 +53,10 @@ $ python --version
 Python 3.7.7
 $ pip --version
 pip 19.2.3 from ... (python 3.7)
+```
 
+Initialize the Project:
+```
 $ func init PythonFunctionsProject --worker-runtime python --docker
 Found Python version 3.7.7 (python).
 Writing .gitignore
@@ -63,17 +69,15 @@ Writing .dockerignore
 $ cd PythonFunctionsProject/
 ```
 
----
-
 ### Create a HTTP-Triggered Function within the Functions Project
-
-#### Generate It
 
 ```
 $ func new --name PyHttp1 --template "HTTP trigger"
 ...
 The function "PyHttp1" was created successfully from the "HTTP trigger" template.
 ```
+
+This generates a minimal but working Azure Function which responds to HTTP requests.
 
 #### Test it on your Local Workstation
 
@@ -175,7 +179,7 @@ docker push cjoakim/azurepythonfunctions:v1.0.0
 
 ---
 
-### Provision Azure Resources and your Azure Function App
+## Provision Azure Resources and your Azure Function App
 
 First, edit **env.sh** with **your** Azure configuration values.
 
@@ -187,15 +191,12 @@ $ provision-1-app.sh
 $ provision-2-config-storage.sh
 ```
 
----
-
 ### Get the URL for your Function in Azure Portal
 
 Click the **Get Function URL** link on this page:
 
 ![deployed-function-get-url](img/deployed-function-get-url.png)
 
----
 
 ### Invoke the HTTP-Triggered Azure Function with a HTTP Client Program
 
@@ -206,6 +207,12 @@ curl "https://cjoakimfdp.azurewebsites.net/api/PyHttp1?code=<secret>&name=Joakim
 
 Hello Joakim!
 ```
+
+### Enhance the implementation of Function "PyHttp1"
+
+This function has been enhanced to only respond to HTTP POSTs, and will either
+write to or query Azure CosmosDB.  See file **PythonFunctionsProject/PyHttp1/__init__.py**
+in this repo.
 
 ---
 
