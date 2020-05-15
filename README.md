@@ -260,3 +260,4 @@ $ provision-9-delete.sh
 - https://docs.microsoft.com/en-us/python/api/azure-functions/azure.functions?view=azure-python
 - https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-cosmosdb-v2-output?tabs=python
 - https://docs.microsoft.com/en-us/azure/azure-functions/machine-learning-pytorch?tabs=bash
+- https://pypi.org/project/azure-eventhub/#publish-events-to-an-event-hub

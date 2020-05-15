@@ -5,11 +5,14 @@
 #    pip-compile --output-file=requirements.txt requirements.in
 #
 arrow==0.15.6             # via -r requirements.in
-certifi==2020.4.5.1       # via requests
+azure-core==1.5.0         # via azure-eventhub
+azure-eventhub==5.1.0     # via -r requirements.in
+certifi==2020.4.5.1       # via requests, uamqp
 chardet==3.0.4            # via requests
 docopt==0.6.2             # via -r requirements.in
 idna==2.9                 # via requests
 python-dateutil==2.8.1    # via arrow
-requests==2.23.0          # via -r requirements.in
-six==1.14.0               # via python-dateutil
+requests==2.23.0          # via -r requirements.in, azure-core
+six==1.14.0               # via azure-core, python-dateutil, uamqp
+uamqp==1.2.7              # via azure-eventhub
 urllib3==1.25.9           # via requests

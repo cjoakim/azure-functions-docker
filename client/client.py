@@ -7,20 +7,27 @@ Usage:
   python client.py http_query_by_geo local 8.806422 53.073635 10
   python client.py http_query_by_geo azure -78.3889 36.6681 200
   python client.py http_query_by_pk azure event-eastasia
+  python client.py send_events_to_hub data/20190317-asheville-marathon-events.json 5000
 """
 
 # Python HTTP Client program for this Azure Function.
 # Chris Joakim, Microsoft, 2020/05/15
+#
+# https://pypi.org/project/azure-eventhub/#publish-events-to-an-event-hub
 
 import json
 import os
 import sys
 import time
+import traceback
 import uuid 
 
+import arrow
 import requests
 
 from docopt import docopt
+
+from azure.eventhub import EventHubProducerClient, EventData
 
 VERSION = 'v20200515a'
 
@@ -91,6 +98,42 @@ class Client:
             resp_obj = json.loads(r.text)
             print(json.dumps(resp_obj, sort_keys=False, indent=2))
 
+    def send_events_to_hub(self, infile, max_count):
+        print('send_events_to_hub; infile: {} max_count: {}'.format(infile, max_count))
+
+        conn_str = os.environ['AZURE_EVENTHUB_CONN_STRING']
+        hub_name = os.environ['AZURE_EVENTHUB_HUBNAME']
+        # print('conn_str: {}'.format(conn_str))
+        # print('hub_name: {}'.format(hub_name))
+
+        producer_client = EventHubProducerClient.from_connection_string(conn_str, eventhub_name=hub_name)
+        print('producer_client: {}'.format(producer_client))
+
+        lines = self.read_lines(infile)
+        with producer_client:
+            for line_idx, line in enumerate(lines):
+                if line_idx < max_count:
+                    event = json.loads(line)
+                    now = arrow.utcnow()
+                    event['pk'] = event['name']
+                    event['sent_time'] = str(now)
+                    event['sent_epoch'] = now.timestamp
+                    msg = json.dumps(event)
+                    try:
+                        event_data_batch = producer_client.create_batch()
+                        event_data_batch.add(EventData(msg))
+                        producer_client.send_batch(event_data_batch)
+                        print('sent: {}'.format(msg))
+                    except:
+                        traceback.print_exc(file=sys.stdout)
+
+    def read_lines(self, infile):
+        lines = list()
+        with open(infile, 'rt') as f:
+            for line in f:
+                lines.append(line)
+        return lines
+
     def write_json_file(self, obj, outfile):
         with open(outfile, 'wt') as f:
             f.write(json.dumps(obj, sort_keys=False, indent=2))
@@ -128,6 +171,10 @@ if __name__ == "__main__":
             lng = float(sys.argv[4].lower())
             km  = int(sys.argv[5].lower())
             client.http_query_by_geo(target, str(lat), str(lng), str(km * 1000))
+        elif func == 'send_events_to_hub':
+            infile = sys.argv[2]
+            max_count = int(sys.argv[3])
+            client.send_events_to_hub(infile, max_count)
         else:
             print_options('Error: invalid function: {}'.format(func))
     else:
